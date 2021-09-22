@@ -1,1 +1,43 @@
+Question 1: Given some sample data, write a program to answer the following: click here to access the required data set
+
+On Shopify, we have exactly 100 sneaker shops, and each of these shops sells only one model of shoe. We want to do some analysis of the average order value (AOV). When we look at orders data over a 30 day window, we naively calculate an AOV of $3145.13. Given that we know these shops are selling sneakers, a relatively affordable item, something seems wrong with our analysis. 
+
+Think about what could be going wrong with our calculation. Think about a better way to evaluate this data. 
+From my understanding of statistics, the data of AOVs is slightly skewed (higher than what it must be) due to the presence of outliners like 70400. This happens as one user spends a lot in the month of march as seen from the data. We need to use a method resistent to outliners like median or interquartile range (IQR) as mean is highly affected b the extreme values.
+What metric would you report for this dataset?
+Median or IQR
+What is its value?
+Median - 284
+
+Question 2: For this question you’ll need to use SQL. Follow this link to access the data set required for the challenge. Please use queries to answer the following questions. Paste your queries along with your final numerical answers below.
+
+How many orders were shipped by Speedy Express in total?
+SELECT COUNT(Orders.OrderID) as 'OrderCount' 
+FROM Orders JOIN Shippers ON Orders.ShipperID=Shippers.ShipperID 
+WHERE Shippers.ShipperName = 'Speedy Express';
+
+So, we get 54.
+
+What is the last name of the employee with the most orders?
+
+SELECT Employees.LastName 
+FROM Orders JOIN Employees ON Orders.EmployeeID=Employees.EmployeeID 
+GROUP BY Employees.LastName 
+ORDER BY Count(Orders.OrderID) DESC
+LIMIT 1;
+
+Output: Peacock
+
+What product was ordered the most by customers in Germany?
+SELECT Products.ProductName, SUM(OrderDetails.Quantity) AS Quantity 
+FROM Orders JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderId 
+JOIN Customers ON Orders.CustomerID = Customers.CustomerID 
+JOIN Products ON OrderDetails.ProductID = Products.ProductID 
+WHERE Customers.Country = "Germany" 
+GROUP BY OrderDetails.ProductID 
+ORDER BY Quantity DESC 
+LIMIT 1;
+
+I considered the most ordered product quantitatively. 
+This gives Boston Crab Meat as the most ordered product by customers in Germany with the total quantity of 160.
 
